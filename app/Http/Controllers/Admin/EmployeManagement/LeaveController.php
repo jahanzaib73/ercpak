@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Http\Controllers\Admin\EmployeManagement;
+
+use App\Http\Controllers\Controller;
+use App\Models\Attandance;
+use App\Models\Leave;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+class LeaveController extends Controller
+{
+    public function index()
+    {
+        if (hasAllPermissionsCustom()) {
+            $leaves = Leave::all();
+        } else {
+            $leaves = Leave::where('user_id', '=', Auth::id())->get();
+        }
+        return view('admin.employee_management.leaves.index', compact('leaves'));
+    }
+
+
+    public function storeLeave(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'reason' => 'required',
+            ]);
+
+            $startDateString = $request->input('start_date');
+            $endDateString = $request->input('end_date');
+
+            $startDate = new DateTime($startDateString);
+            $endDate = new DateTime($endDateString);
+
+            // Calculate the duration of leave
+            $numberOfDays = $endDate->diff($startDate)->days + 1;
+
+            // Create a new Leave model instance and save the data
+            // Add $numberOfDays to the request data
+            $requestData = $request->all();
+            $requestData['total_days'] = $numberOfDays;
+
+            // Create a new Leave model instance and save the data
+            Leave::create($requestData);
+
+            // $user = User::findOrFail(Auth::user()->id);
+            // $user->leaves = $user->leaves - $numberOfDays;
+            // $user->update();
+
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => "Leave Applied Successfully"
+            ], 200);
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return $th;
+        }
+    }
+
+    public function approveLeave($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $leave = Leave::findOrFail($id);
+            $leave->status = Leave::APPROVED;
+            $leave->update();
+
+            // Assuming $startDate and $endDate are instances of Carbon
+            $startDate = Carbon::parse($leave->start_date);
+            $endDate = Carbon::parse($leave->end_date);
+
+            // Create an array to store all the dates
+            $dateRange = [];
+
+            // Iterate through each day between start and end dates
+            while ($startDate->lte($endDate)) {
+                $dateRange[] = $startDate->toDateString(); // Add the current date to the array
+                $startDate->addDay(); // Move to the next day
+            }
+            // dd($leave, $dateRange);
+
+            foreach ($dateRange as $date) {
+                // Check if an attendance record exists for the current date
+                $existingAttendance = Attandance::where([
+                    'user_id' => $leave->user_id,
+                    'date_time' => $date,
+                ])->first();
+
+                if ($existingAttendance) {
+                    // Update the attendance status if the record exists
+                    $existingAttendance->update([
+                        'attandance_status' => Attandance::LEAVE,
+                    ]);
+                } else {
+                    // Create a new attendance record if it doesn't exist
+                    Attandance::create([
+                        'user_id' => $leave->user_id,
+                        'date_time' => $date,
+                        'attandance_status' => Attandance::LEAVE,
+                    ]);
+                }
+            }
+
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Attendance Approved successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+}

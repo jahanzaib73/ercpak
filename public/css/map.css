@@ -1,0 +1,200 @@
+#regional_map {
+    display: none;
+}
+
+#regional_map .state {
+    cursor: pointer;
+}
+
+#regional_map .state .shape {
+    cursor: pointer;
+    -width: 0;
+}
+
+#regional_map .state .label_icon_state {
+    fill: #fff;
+    font-family: Arial;
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: normal;
+}
+
+#regional_map .state .label_state {
+    display: none;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+#regional_map .state:hover .label_state,
+#regional_map .state.hover .label_state {
+    display: block;
+}
+
+#regional_map .model-green .state .shape {
+    fill: #ffffff;
+}
+
+#regional_map .model-green .state.level-1 .shape {
+    fill: rgba(173, 151, 79, 0.1);
+}
+
+#regional_map .model-green .state.level-2 .shape {
+    fill: rgba(173, 151, 79, 0.2);
+}
+
+#regional_map .model-green .state.level-3 .shape {
+    fill: rgba(173, 151, 79, 0.3);
+}
+
+#regional_map .model-green .state.level-4 .shape {
+    fill: rgba(173, 151, 79, 0.4);
+}
+#regional_map .model-green .state.level-5 .shape {
+    fill: rgba(173, 151, 79, 0.5);
+}
+#regional_map .model-green .state.level-6 .shape {
+    fill: rgba(173, 151, 79, 0.6);
+}
+#regional_map .model-green .state.level-7 .shape {
+    fill: rgba(173, 151, 79, 0.7);
+}
+#regional_map .model-green .state.level-8 .shape {
+    fill: rgba(173, 151, 79, 0.8);
+}
+#regional_map .model-green .state.level-9 .shape {
+    fill: rgba(173, 151, 79, 0.9);
+}
+#regional_map .model-green .state.level-10 .shape {
+    fill: rgba(173, 151, 79, 1);
+}
+
+#regional_map .model-green .state.selected .shape {
+    fill: #949494;
+    /* Color when selected */
+}
+
+#regional_map .model-green .state .icon_state {
+    fill: #10592f;
+}
+
+#regional_map .model-green .state .label_icon_state {
+    fill: #fff;
+}
+
+#regional_map .model-green .state .label_state {
+    fill: #666;
+}
+
+#regional_map .model-green .state:hover .shape,
+#regional_map .model-green .state.hover .shape {
+    fill: #949494;
+}
+
+#regional_map .model-green .state:hover .icon_state,
+#regional_map .model-green .state.hover .icon_state {
+    fill: #5a95ce;
+}
+
+#listing_map {
+    display: none;
+}
+
+#listing_map .state {
+    cursor: pointer;
+}
+
+#listing_map .state .shape {
+    cursor: pointer;
+    -width: 0;
+}
+
+#listing_map .state .label_icon_state {
+    fill: #fff;
+    font-family: Arial;
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: normal;
+}
+
+#listing_map .state .label_state {
+    display: none;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+#listing_map .state:hover .label_state,
+#listing_map .state.hover .label_state {
+    display: block;
+}
+
+#listing_map .model-green .state .shape {
+    fill: #ffffff;
+}
+
+#listing_map .model-green .state.level-1 .shape {
+    fill: rgba(173, 151, 79, 0.1);
+}
+
+#listing_map .model-green .state.level-2 .shape {
+    fill: rgba(173, 151, 79, 0.2);
+}
+
+#listing_map .model-green .state.level-3 .shape {
+    fill: rgba(173, 151, 79, 0.3);
+}
+
+#listing_map .model-green .state.level-4 .shape {
+    fill: rgba(173, 151, 79, 0.4);
+}
+#listing_map .model-green .state.level-5 .shape {
+    fill: rgba(173, 151, 79, 0.5);
+}
+#listing_map .model-green .state.level-6 .shape {
+    fill: rgba(173, 151, 79, 0.6);
+}
+#listing_map .model-green .state.level-7 .shape {
+    fill: rgba(173, 151, 79, 0.7);
+}
+#listing_map .model-green .state.level-8 .shape {
+    fill: rgba(173, 151, 79, 0.8);
+}
+#listing_map .model-green .state.level-9 .shape {
+    fill: rgba(173, 151, 79, 0.9);
+}
+#listing_map .model-green .state.level-10 .shape {
+    fill: rgba(173, 151, 79, 1);
+}
+
+#listing_map .model-green .state.selected .shape {
+    fill: #949494;
+    /* Color when selected */
+}
+
+#listing_map .model-green .state .icon_state {
+    fill: #10592f;
+}
+
+#listing_map .model-green .state .label_icon_state {
+    fill: #fff;
+}
+
+#listing_map .model-green .state .label_state {
+    fill: #666;
+}
+
+#listing_map .model-green .state:hover .shape,
+#listing_map .model-green .state.hover .shape {
+    fill: #949494;
+}
+
+#listing_map .model-green .state:hover .icon_state,
+#listing_map .model-green .state.hover .icon_state {
+    fill: #5a95ce;
+}
+
+
+@import url(https://unpkg.com/@webpixels/css/dist/index.css);

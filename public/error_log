@@ -1,0 +1,9 @@
+[02-Feb-2024 07:42:52 UTC] PHP Warning:  require(/home/ercpvuhw/ae.ercpak.com/../ae.ercpak.com/vendor/autoload.php): Failed to open stream: No such file or directory in /home/ercpvuhw/ae.ercpak.com/index.php on line 34
+[02-Feb-2024 07:42:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ercpvuhw/ae.ercpak.com/../ae.ercpak.com/vendor/autoload.php' (include_path='.:/opt/alt/php80/usr/share/pear:/opt/alt/php80/usr/share/php:/usr/share/pear:/usr/share/php') in /home/ercpvuhw/ae.ercpak.com/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/ercpvuhw/ae.ercpak.com/index.php on line 34
+[02-Feb-2024 07:44:01 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.2.0". You are running 8.0.30. in /home/ercpvuhw/ae.ercpak.core/vendor/composer/platform_check.php on line 24
+[02-Feb-2024 07:55:04 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.2.0". You are running 8.0.30. in /home/ercpvuhw/ae.ercpak.core/vendor/composer/platform_check.php on line 24
+[02-Feb-2024 08:14:02 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.2.0". You are running 8.0.30. in /home/ercpvuhw/ae.ercpak.core/vendor/composer/platform_check.php on line 24
+[02-Feb-2024 11:35:29 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.2.0". You are running 8.0.30. in /home/ercpvuhw/ae.ercpak.core/vendor/composer/platform_check.php on line 24

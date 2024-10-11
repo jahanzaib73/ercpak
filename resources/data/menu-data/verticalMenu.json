@@ -1,0 +1,27 @@
+{
+  "menu": [
+    {
+      "name": "Dashboard",
+      "badgeClass": "badge badge-light-warning rounded-pill ms-auto me-1",
+      "url": "admin/dashboard",
+      "icon": "home",
+      "slug": "dashboard-ecommerce"
+    },
+    {
+      "navheader": "Manu",
+      "slug": ""
+    },
+    {
+      "url": "admin/user/list",
+      "name": "User",
+      "icon": "user",
+      "slug": "app-user-list"
+    },
+    {
+      "url": "admin/roles/list",
+      "name": "Roles",
+      "icon": "user",
+      "slug": "roles"
+    }
+  ]
+}

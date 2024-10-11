@@ -1,0 +1,14 @@
+/* Hide all content except the printable section */
+body>*:not(.ReportOfGuestAndVisitor) {
+    display: none;
+}
+
+/* Show the printable section */
+.ReportOfGuestAndVisitor {
+    display: block;
+    /* or display: initial; depending on the default display value */
+}
+
+body {
+    background-color: red;
+}
