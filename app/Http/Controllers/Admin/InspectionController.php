@@ -88,7 +88,7 @@ class InspectionController extends Controller
         $data = [];
         $data['states'] = $this->getStates();
 
-        return view('admin.fleets.inspections.index', $data);
+        return view('new-admin.fleets.inspections.index', $data);
     }
 
     public function create()
@@ -102,7 +102,7 @@ class InspectionController extends Controller
         $data['vehicles'] = Vehicle::whereStatus(Vehicle::AVAILABLE)->get();
         $data['properties'] = ProtocolLiaison::where('protocol_liaisontype_id', 5)->get();
 
-        return view('admin.fleets.inspections.create', $data);
+        return view('new-admin.fleets.inspections.create', $data);
     }
     public function store(Request $request)
     {
@@ -216,7 +216,7 @@ class InspectionController extends Controller
         $data['venderos'] = Vendor::whereStatus(1)->get();
 
         // dd($data);
-        return view('admin.fleets.inspections.show', $data);
+        return view('new-admin.fleets.inspections.show', $data);
     }
 
     public function edit(Request $request)

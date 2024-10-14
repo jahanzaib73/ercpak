@@ -1,6 +1,6 @@
 @extends('new-admin/layouts/contentLayoutMaster')
 
-@section('title', 'Fuel Entries')
+@section('title', 'List of Inspection')
 
 @section('vendor-style')
     {{-- Page Css files --}}
@@ -15,9 +15,6 @@
 @section('page-style')
     {{-- Page Css files --}}
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
-@endsection
-
-@section('content')
     <style>
         table {
             counter-reset: section;
@@ -48,19 +45,57 @@
         .pac-container {
             z-index: 999999;
         }
+
+        .text-right {
+            text-align: right;
+        }
     </style>
+@endsection
+
+@section('content')
+    <!-- Basic tabs start -->
+    <section id="basic-tabs-components">
+        <div class="row match-height">
+            <!-- Basic Tabs starts -->
+            <div class="col-xl-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->is('fleet/work-orders') ? 'active' : '' }}"
+                                    href="/fleet/work-orders">Work Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->is('fleet/inspections') ? 'active' : '' }}"
+                                    href="/fleet/inspections">Inspection</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic Tabs end -->
+
     <!-- Basic Tables start -->
     <div class="row" id="basic-table">
         <div class="col-12">
-            @include('new-admin.fleets.fuels._models._state')
+            @include('new-admin.fleets._shareable._states', [
+                'states' => $states ?: [],
+            ])
             <hr>
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Fuel Entries</h4>
-                    @if (Auth::user()->can('Add Trips'))
-                        <button type="button" class="btn btn-primary save-btn mr-2" data-bs-toggle="modal"
-                            data-bs-target="#addFuelLabel">Fuel Entry </button>
-                    @endif
+                    <div class="col-md-5 py-0 pl-3">
+                        <h4 class="card-title">List of Work Orders</h4>
+                    </div>
+                    <div class="col-md-7 text-right">
+                        <a class="btn btn-primary save-btn filter-link activeFilterButton" data-type="-1"
+                            href="#">All</a>
+                        <a class="btn btn-primary save-btn filter-link" href="#" data-type="0">Open</a>
+                        <a class="btn btn-primary save-btn filter-link" href="#" data-type="2">Pending</a>
+                        <a class="btn btn-primary save-btn filter-link" href="#" data-type="1">Closed</a>
+                    </div>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success" role="alert">
@@ -75,19 +110,16 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Inspection Type</th>
                                 <th scope="col">Photo</th>
+                                <th scope="col">Inspection#</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Vehicle#</th>
                                 <th scope="col">Model</th>
-                                <th scope="col">Fuel Type</th>
-                                <th scope="col">Current Mtr</th>
-                                <th scope="col">Qty</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Last Refuel Date</th>
+                                <th scope="col">Meter</th>
                                 <th scope="col">Cost Center</th>
-                                <th scope="col">Fuelman</th>
-                                <th scope="col">Attachments</th>
+                                <th scope="col">Attachment</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">View</th>
                             </tr>
                         </thead>
@@ -95,19 +127,10 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-                <!-- Add Modal -->
-                @include('new-admin.fleets.fuels._models._add', [
-                    'costCenters' => $costCenters,
-                    'users' => $users,
-                ])
-
-                @include('new-admin.fleets.fuels._models._outsource_vehicle')
             </div>
         </div>
     </div>
+    <!-- Basic Tables end -->
 @endsection
 
 @section('vendor-script')
@@ -129,16 +152,17 @@
     <script src="{{ asset(mix('vendors/js/forms/cleave/addons/cleave-phone.us.js')) }}"></script>
 @endsection
 @section('page-script')
-<script src="{{ asset('charts/Chart.min.js') }}"></script>
-<script src="{{ asset('charts/amcharts.js') }}"></script>
-<script src="{{ asset('charts/serial.js') }}"></script>
     <script>
         var table = $('.ajax-table').DataTable({
             processing: true,
             serverSide: true,
 
             ajax: {
-                url: "{{ route('fuels.index') }}",
+                url: "{{ route('work-orders.index') }}",
+                data: function(d) {
+                    // Include filter data from the data-type attribute of the active filter link
+                    d.status = $('.filter-link.activeFilterButton').data('type');
+                }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -147,8 +171,16 @@
                     searchable: false
                 },
                 {
+                    data: 'inspection_type',
+                    name: 'inspection_type'
+                },
+                {
                     data: 'image',
                     name: 'image'
+                },
+                {
+                    data: 'inspection_number',
+                    name: 'inspection_number'
                 },
                 {
                     data: 'date',
@@ -158,49 +190,28 @@
                     data: 'vehicle_number',
                     name: 'vehicle_number'
                 },
+
                 {
                     data: 'model',
                     name: 'model'
                 },
-
                 {
-                    data: 'fuelType',
-                    name: 'fuelType'
-                },
-                {
-                    data: 'vehicle_meter_reading',
-                    name: 'vehicle_meter_reading'
-                },
-                {
-                    data: 'qty',
-                    name: 'qty'
-                },
-                {
-                    data: 'price',
-                    name: 'price'
-                },
-                {
-                    data: 'total',
-                    name: 'total'
-                },
-                {
-                    data: 'lastRefuelDate',
-                    name: 'lastRefuelDate'
+                    data: 'meter_reading',
+                    name: 'meter_reading'
                 },
                 {
                     data: 'costCenter',
                     name: 'costCenter'
                 },
                 {
-                    data: 'fuelMan',
-                    name: 'fuelMan'
-                },
-
-                {
                     data: 'attachments',
                     name: 'attachments'
                 },
 
+                {
+                    data: 'status',
+                    name: 'status'
+                },
                 {
                     data: 'action',
                     name: 'action',
@@ -210,6 +221,19 @@
             ]
         });
 
+        // Add a click event listener to the filter links
+        $('.filter-link').click(function(e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Remove the "active" class from all filter links
+            $('.filter-link').removeClass('activeFilterButton');
+
+            // Add the "active" class to the clicked link
+            $(this).addClass('activeFilterButton');
+
+            // Trigger a DataTable reload with the updated filter criteria
+            table.ajax.reload();
+        });
 
         $(document).ready(function() {
             $('#outsourceVehicleForm').validate({
@@ -270,12 +294,10 @@
                                 selectElement.append('<option selected>Choose...</option>')
 
                                 $.each(response.vehicles, function(index, option) {
-                                    selectElement.append($(
-                                        '<option>', {
-                                            value: option.id,
-                                            text: option.vehicle_number,
-                                            'data-type': "vehicle"
-                                        }));
+                                    selectElement.append($('<option>', {
+                                        value: option.id,
+                                        text: option.vehicle_number
+                                    }));
                                 });
 
                                 $('#outsource').modal('hide');
@@ -346,7 +368,7 @@
                     if (type == 'vehicle') {
                         $('#fuel_vehicle_number').text(data.vehicle_number);
                         $('#fuel_vehicle_model').text(data.model.name);
-                        $('.vehicle_image').attr('src', data.image_url)
+                        $('.fuel_vehicle_image').attr('src', data.image_url)
                         $('#vehicle_meter_reading').val(data.current_meter_reading)
 
                         $('#driver_id').val('').trigger('change');
@@ -361,8 +383,8 @@
                     } else {
                         $('#fuel_vehicle_number').text(data.vehicle.vehicle_number);
                         $('#fuel_vehicle_model').text(data.vehicle.model.name);
-                        $('.vehicle_image').attr('src', data.vehicle.image_url);
-                        $('#vehicle_meter_reading').val(data.vehicle.current_meter_reading);
+                        $('.fuel_vehicle_image').attr('src', data.vehicle.image_url)
+                        $('#vehicle_meter_reading').val(data.vehicle.current_meter_reading)
 
                         $('#driver_id').val(data.driver_id).trigger('change');
                         $('#driver_name').text(data.driver.first_name + ' ' + data.driver.last_name);
@@ -378,19 +400,6 @@
                 }
             });
         }
-
-        // When the nested modal is opened
-        $("#outsource").on("show.bs.modal", function() {
-
-            $("#addFuelLabel").css("overflow", "hidden");
-        });
-
-        // When the nested modal is closed
-        $("#outsource").on("hidden.bs.modal", function() {
-            // Re-enable scrolling on the parent modal
-            $("#addFuelLabel").css("overflow", "auto");
-        });
-
 
         $('#driver_id').change(function() {
             getUserDataAjax($(this).val(), 'driver_image', 'driver_name', 'driver_designation');
@@ -546,8 +555,10 @@
                 }
             });
             // get target source
-            var target = link.attr('data-target-source').split(',');
-
+            var target = [];
+            $.each(labels, function(index, value) {
+                target.push(link.attr('data-target-source'));
+            });
             // Chart initialisieren
             var modal = $(this);
             var canvas = modal.find('.modal-body canvas');
@@ -589,15 +600,15 @@
                 "startDuration": 2,
                 "dataProvider": [{
                     "fuel": "Diesel",
-                    "visits": {{ $disel }},
+                    "visits": 14025,
                     "color": "#5A5A5A"
                 }, {
                     "fuel": "Super",
-                    "visits": {{ $super }},
+                    "visits": 18082,
                     "color": "#228B22"
                 }, {
                     "fuel": "HOBC",
-                    "visits": {{ $hobc }},
+                    "visits": 12809,
                     "color": "#FF5733"
                 }],
                 "valueAxes": [{
@@ -682,7 +693,7 @@
 
                         var row = $('<tr>');
                         row.append(
-                            `<td><a style="color: #337ab7" href="#" data-toggle="modal" data-target="#modChart" data-source="${fuel.JanQty},${fuel.FebQty},${fuel.MarQty},${fuel.AprQty},${fuel.MayQty},${fuel.JuneQty},${fuel.JulyQty},${fuel.AugQty},${fuel.SeptQty},${fuel.OctQty},${fuel.NovQty},${fuel.DecQty}" data-target-source="${fuel.JanTotal},${fuel.FebTotal},${fuel.MarTotal},${fuel.AprTotal},${fuel.MayTotal},${fuel.JuneTotal},${fuel.JulyTotal},${fuel.AugTotal},${fuel.SeptTotal},${fuel.OctTotal},${fuel.NovTotal},${fuel.DecTotal}"> <span class="fa fa-signal"></span> ${fuel.fuel_type_name}</a></td>`
+                            `<td><a style="color: #337ab7" href="#" data-toggle="modal" data-target="#modChart" data-source="${fuel.JanTotal},${fuel.FebTotal},${fuel.MarTotal},${fuel.AprTotal},${fuel.MayTotal},${fuel.JuneTotal},${fuel.JulyTotal},${fuel.AugTotal},${fuel.SeptTotal},${fuel.OctTotal},${fuel.NovTotal},${fuel.DecTotal}," data-target-source="50"> <span class="fa fa-signal"></span> ${fuel.fuel_type_name}</a></td>`
                         );
                         row.append('<td>' + numberFormatter.format(fuel.JanTotal) + '</td>');
                         row.append('<td>' + numberFormatter.format(fuel.FebTotal) + '</td>');

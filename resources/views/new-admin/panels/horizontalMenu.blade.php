@@ -66,13 +66,13 @@
         <div class="navbar-container main-menu-content" data-menu="menu-container">
             <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
                 {{-- Foreach menu item starts --}}
-                <li class="nav-item dropdown {{ Route::currentRouteName() === 'home' ? 'active' : '' }}">
+                <li class="nav-item dropdown {{ Route::currentRouteName() === 'home' ? '' : '' }}">
                     <a href="{{ url('/home') }}" class="nav-link d-flex align-items-center">
                         <i data-feather="home"></i>
                         <span>{{ __('Dashboard') }}</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown {{ Route::currentRouteName() === 'government' ? 'active' : '' }}"
+                <li class="nav-item dropdown {{ Route::currentRouteName() === 'government' ? '' : '' }}"
                     data-menu="dropdown">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center dropdown-toggle"
                         data-bs-toggle="dropdown">
@@ -80,18 +80,18 @@
                         <span>{{ __('Government/Ministry') }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'government' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'government' ? '' : '' }}">
                             <a href="{{ url('/government') }}" class="nav-link">
                                 <span>{{ __('Government') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'departments' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'departments' ? '' : '' }}">
                             <a href="{{ url('/departments') }}" class="nav-link">
                                 <span>{{ __('Department') }}</span>
                             </a>
                         </li>
                         <li
-                            class="dropdown-item {{ Route::currentRouteName() === 'sub-departments' ? 'active' : '' }}">
+                            class="dropdown-item {{ Route::currentRouteName() === 'sub-departments' ? '' : '' }}">
                             <a href="{{ url('/sub-departments') }}" class="nav-link">
                                 <span>{{ __('Sub Department') }}</span>
                             </a>
@@ -107,7 +107,7 @@
                     <ul class="dropdown-menu">
                         @if (Auth::user()->hasPermissionTo('All Vehicle Make'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.make' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.make' ? '' : '' }}">
                                 <a href="{{ route('vehicle.make') }}" class="nav-link">
                                     <span>{{ __('Vehicle Make') }}</span>
                                 </a>
@@ -115,7 +115,7 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Vehicle Model'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.models' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.models' ? '' : '' }}">
                                 <a href="{{ route('vehicle.models') }}" class="nav-link">
                                     <span>{{ __('Vehicle Model') }}</span>
                                 </a>
@@ -123,14 +123,14 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Vehicle Type'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.type' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'vehicle.type' ? '' : '' }}">
                                 <a href="{{ route('vehicle.type') }}" class="nav-link">
                                     <span>{{ __('Vehicle Type') }}</span>
                                 </a>
                             </li>
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Fuel Type'))
-                            <li class="dropdown-item {{ Route::currentRouteName() === 'fuel.type' ? 'active' : '' }}">
+                            <li class="dropdown-item {{ Route::currentRouteName() === 'fuel.type' ? '' : '' }}">
                                 <a href="{{ route('fuel.type') }}" class="nav-link">
                                     <span>{{ __('Fuel Type') }}</span>
                                 </a>
@@ -138,7 +138,7 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Vehicles'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'vehicles.index' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'vehicles.index' ? '' : '' }}">
                                 <a href="{{ route('vehicles.index') }}" class="nav-link">
                                     <span>{{ __('Vehicles') }}</span>
                                 </a>
@@ -146,7 +146,7 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Trips'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'trips.index' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'trips.index' ? '' : '' }}">
                                 <a href="{{ route('trips.index') }}" class="nav-link">
                                     <span>{{ __('Trips') }}</span>
                                 </a>
@@ -154,7 +154,7 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Fuels Slip'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'fuels.index' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'fuels.index' ? '' : '' }}">
                                 <a href="{{ route('fuels.index') }}" class="nav-link">
                                     <span>{{ __('Fuels') }}</span>
                                 </a>
@@ -162,14 +162,14 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Inspection Check List'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'inspection-checklist' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'inspection-checklist' ? '' : '' }}">
                                 <a href="{{ route('inspection-checklist') }}" class="nav-link">
                                     <span>{{ __('Inspections Checklist') }}</span>
                                 </a>
                             </li>
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Vendors'))
-                            <li class="dropdown-item {{ Route::currentRouteName() === 'vendors' ? 'active' : '' }}">
+                            <li class="dropdown-item {{ Route::currentRouteName() === 'vendors' ? '' : '' }}">
                                 <a href="{{ route('vendors') }}" class="nav-link">
                                     <span>{{ __('Vendors') }}</span>
                                 </a>
@@ -177,25 +177,25 @@
                         @endif
                         @if (Auth::user()->hasPermissionTo('All Task Workorders'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'task-workorders' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'task-workorders' ? '' : '' }}">
                                 <a href="{{ route('task-workorders') }}" class="nav-link">
                                     <span>{{ __('Workorder Tasks') }}</span>
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->hasPermissionTo('All Inspection'))
+                        {{-- @if (Auth::user()->hasPermissionTo('All Inspection'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'inspections.index' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'inspections.index' ? '' : '' }}">
                                 <a href="{{ route('inspections.index') }}" class="nav-link">
                                     <span>{{ __('Inspections') }}</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (Auth::user()->hasPermissionTo('All Work Orders'))
                             <li
-                                class="dropdown-item {{ Route::currentRouteName() === 'work-orders.index' ? 'active' : '' }}">
+                                class="dropdown-item {{ Route::currentRouteName() === 'work-orders.index' ? '' : '' }}">
                                 <a href="{{ route('work-orders.index') }}" class="nav-link">
-                                    <span>{{ __('Workorder') }}</span>
+                                    <span>{{ __('Inspections/Workorder') }}</span>
                                 </a>
                             </li>
                         @endif
@@ -203,7 +203,7 @@
                 </li>
 
 
-                <li class="nav-item dropdown {{ Route::currentRouteName() === 'location' || Route::currentRouteName() === 'country' || Route::currentRouteName() === 'province' || Route::currentRouteName() === 'city' || Route::currentRouteName() === 'designation' || Route::currentRouteName() === 'cost-center' || Route::currentRouteName() === 'user-management' ? 'active' : '' }}"
+                <li class="nav-item dropdown {{ Route::currentRouteName() === 'location' || Route::currentRouteName() === 'country' || Route::currentRouteName() === 'province' || Route::currentRouteName() === 'city' || Route::currentRouteName() === 'designation' || Route::currentRouteName() === 'cost-center' || Route::currentRouteName() === 'user-management' ? '' : '' }}"
                     data-menu="dropdown">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center dropdown-toggle"
                         data-bs-toggle="dropdown">
@@ -211,38 +211,38 @@
                         <span>{{ __('User Management') }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'location' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'location' ? '' : '' }}">
                             <a href="{{ route('locations.index') }}" class="nav-link">
                                 <span>{{ __('Locations') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'country' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'country' ? '' : '' }}">
                             <a href="{{ route('countries.index') }}" class="nav-link">
                                 <span>{{ __('Country') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'province' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'province' ? '' : '' }}">
                             <a href="{{ route('provinces.index') }}" class="nav-link">
                                 <span>{{ __('Provinces') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'city' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'city' ? '' : '' }}">
                             <a href="{{ route('cities.index') }}" class="nav-link">
                                 <span>{{ __('Cities') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'designation' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'designation' ? '' : '' }}">
                             <a href="{{ route('desiginations.index') }}" class="nav-link">
                                 <span>{{ __('Designation') }}</span>
                             </a>
                         </li>
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'cost-center' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'cost-center' ? '' : '' }}">
                             <a href="{{ route('cost-centers.index') }}" class="nav-link">
                                 <span>{{ __('Cost Center') }}</span>
                             </a>
                         </li>
                         {{-- <li
-                            class="dropdown-item {{ Route::currentRouteName() === 'user-management' ? 'active' : '' }}">
+                            class="dropdown-item {{ Route::currentRouteName() === 'user-management' ? '' : '' }}">
                             <a href="{{ route('users.index') }}" class="nav-link">
                                 <span>{{ __('User Management') }}</span>
                             </a>
@@ -251,7 +251,7 @@
                 </li>
 
 
-                <li class="nav-item dropdown {{ Route::currentRouteName() === 'guest' || Route::currentRouteName() === 'guest-bulk' || Route::currentRouteName() === 'purpose-visit' ? 'active' : '' }}"
+                <li class="nav-item dropdown {{ Route::currentRouteName() === 'guest' || Route::currentRouteName() === 'guest-bulk' || Route::currentRouteName() === 'purpose-visit' ? '' : '' }}"
                     data-menu="dropdown">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center dropdown-toggle"
                         data-bs-toggle="dropdown">
@@ -260,21 +260,21 @@
                     </a>
                     <ul class="dropdown-menu">
                         <!-- Guest & Customers -->
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'guest' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'guest' ? '' : '' }}">
                             <a href="{{ route('guest-and-visitors.index', ['module_name' => App\Models\GuestVistor::GUEST]) }}"
                                 class="nav-link">
                                 <span>{{ __('Guest & Customers') }}</span>
                             </a>
                         </li>
                         <!-- Guest & Customers Bulk Upload -->
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'guest-bulk' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'guest-bulk' ? '' : '' }}">
                             <a href="{{ route('guest-and-visitors.bulk', ['module_name' => App\Models\GuestVistor::GUEST]) }}"
                                 class="nav-link">
                                 <span>{{ __('Guest & Customers Bulk Upload') }}</span>
                             </a>
                         </li>
                         <!-- Purpose of Visit -->
-                        <li class="dropdown-item {{ Route::currentRouteName() === 'purpose-visit' ? 'active' : '' }}">
+                        <li class="dropdown-item {{ Route::currentRouteName() === 'purpose-visit' ? '' : '' }}">
                             <a href="{{ route('purpose-of-visits.index') }}" class="nav-link">
                                 <span>{{ __('Purpose of Visit') }}</span>
                             </a>

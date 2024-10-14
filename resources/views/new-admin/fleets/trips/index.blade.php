@@ -15,9 +15,6 @@
 @section('page-style')
     {{-- Page Css files --}}
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
-@endsection
-
-@section('content')
     <style>
         table {
             counter-reset: section;
@@ -44,10 +41,19 @@
             border: 1px solid rgba(0, 0, 0, .125);
             border-radius: .25rem
         }
+
         .pac-container {
             z-index: 999999;
         }
+
+        .text-right {
+            text-align: right
+        }
     </style>
+@endsection
+
+@section('content')
+
     <!-- Basic Tables start -->
     <div class="row" id="basic-table">
         <div class="col-12">

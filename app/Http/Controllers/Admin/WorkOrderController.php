@@ -100,7 +100,7 @@ class WorkOrderController extends Controller
         $data = [];
         $data['states'] = $this->getStates();
 
-        return view('admin.fleets.work_orders.index', $data);
+        return view('new-admin.fleets.work_orders.index', $data);
     }
 
     public function show($id)
