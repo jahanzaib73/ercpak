@@ -1,6 +1,6 @@
 @extends('new-admin/layouts/contentLayoutMaster')
 
-@section('title', 'Add Attachements')
+@section('title', 'Show Inspection')
 
 @section('vendor-style')
     {{-- Page Css files --}}
