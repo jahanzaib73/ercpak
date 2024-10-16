@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Department extends Model
 {
     use HasFactory, LogsActivity;
-
+    protected $fillable = ['name'];
     protected $guarded = [];
 
     public function government()

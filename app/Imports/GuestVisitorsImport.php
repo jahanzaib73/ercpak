@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\PurposeOfVisit;
 use App\Models\Department;
 use App\Models\Desigination;
+use App\Models\SubDepartment;
 
 class GuestVisitorsImport implements ToModel, WithHeadingRow
 {
@@ -49,18 +50,19 @@ class GuestVisitorsImport implements ToModel, WithHeadingRow
         }
 
         // Find department by name using like query
+        // Find or insert department by name
         if (!empty($row['department'])) {
             $department = Department::where('name', 'like', '%' . $row['department'] . '%')->first();
             if (!$department) {
-                throw new \Exception('Department not found: ' . $row['department']);
+                $department = Department::create(['name' => $row['department']]); // Insert new department
             }
         }
 
-        // Find sub department by name using like query
+        // Find or insert sub department by name
         if (!empty($row['sub_department'])) {
-            $sub_department = Department::where('name', 'like', '%' . $row['sub_department'] . '%')->first();
+            $sub_department = SubDepartment::where('name', 'like', '%' . $row['sub_department'] . '%')->first();
             if (!$sub_department) {
-                throw new \Exception('Sub Department not found: ' . $row['sub_department']);
+                $sub_department = SubDepartment::create(['name' => $row['sub_department'], 'department_id' => $department->id]); // Insert new sub-department
             }
         }
 
