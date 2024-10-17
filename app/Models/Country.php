@@ -12,6 +12,7 @@ class Country extends Model
 {
     use HasFactory,LogsActivity;
 
+    protected $fillable = ['name'];
     protected $guarded = [];
 
      /**

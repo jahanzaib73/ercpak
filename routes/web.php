@@ -327,6 +327,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/visa/delete/{id}', [VisaController::class, 'destroy'])->name('visa.delete');
 
 
+    Route::POST('guest-and-visitors/bulk/delete', [GuestVisitController::class, 'bulkDelete'])->name('guest-and-visitors.bulkDelete');
+    Route::get('guest-and-visitors/bulk/export', [GuestVisitController::class, 'export'])->name('guest-and-visitors.export');
     Route::get('guest-and-visitors/create/counts', [GuestVisitController::class, 'updateCardCounts'])->name('guest-and-visitors.counts');
     Route::get('guest-and-visitors/create/{module}/{oldRecordCnic?}', [GuestVisitController::class, 'create'])->name('guest-and-visitors.create');
     Route::get('guest-and-visitors/delete/{id}', [GuestVisitController::class, 'destroy'])->name('guest-and-visitors.delete');

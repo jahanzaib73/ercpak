@@ -82,7 +82,8 @@
             background: #ffffff;
             border-color: var(--bs-btn-hover-border-color);
         }
-        #multiselect .dropdown.bootstrap-select.show-tick{
+
+        #multiselect .dropdown.bootstrap-select.show-tick {
             width: 100% !important;
         }
 
@@ -261,6 +262,16 @@
                                             </div>
 
                                         </div>
+                                        <div class="row mt-3">
+                                            <div class="col-3">
+                                                <button id="deleteSelected" class="btn btn-danger">Delete
+                                                    Selected</button>
+                                                <button id="exportSelected" class="btn btn-primary">Export
+                                                    Selected</button>
+
+                                            </div>
+
+                                        </div>
 
                                         <div class="tab-content" id="myTabContent">
                                             <!-- All Records Table -->
@@ -274,6 +285,7 @@
                                                                 style="width: 100%">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th scope="select-checkbox">Checkbox</th>
                                                                         <th>#</th>
                                                                         <th class="photo">Photo</th>
                                                                         <th class="category">Category</th>
@@ -316,6 +328,7 @@
                                                                 style="width: 100%">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th scope="select-checkbox">Checkbox</th>
                                                                         <th>#</th>
                                                                         <th class="photo">Photo</th>
                                                                         <th class="category">Category</th>
@@ -359,6 +372,7 @@
                                                                 style="width: 100%">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th scope="select-checkbox">Checkbox</th>
                                                                         <th>#</th>
                                                                         <th class="photo">Photo</th>
                                                                         <th class="category">Category</th>
@@ -402,6 +416,7 @@
                                                                 style="width: 100%">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th scope="select-checkbox">Checkbox</th>
                                                                         <th>#</th>
                                                                         <th class="photo">Photo</th>
                                                                         <th class="category">Category</th>
@@ -1299,6 +1314,17 @@
                         }
                     },
                     columns: [{
+                            data: 'checkbox', // Column for checkboxes
+                            name: 'checkbox',
+                            orderable: false,
+                            searchable: false,
+                            render: function(data, type, row) {
+                                return '<input type="checkbox" class="select-row" value="' + row
+                                    .id + '">';
+                            },
+                            className: 'select-checkbox'
+                        },
+                        {
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
                             orderable: false,
@@ -2472,10 +2498,20 @@
                     // Assuming `response.counts` is an object containing all necessary counts from the server response
                     var counts = response.counts;
                     $('#allstate').text(counts.totalGuests);
+                    $('#allMale').text(counts.allMale);
+                    $('#allFemale').text(counts.allFemale);
                     $('#baluchistan').text(counts.baluchistanVisitor);
+                    $('#baluchistanMale').text(counts.baluchistanMale);
+                    $('#baluchistanFemale').text(counts.baluchistanFemale);
                     $('#kpk').text(counts.khyberVisitor);
+                    $('#khyberMale').text(counts.khyberMale);
+                    $('#khyberFemale').text(counts.khyberFemale);
                     $('#punjab').text(counts.punjabVisitor);
+                    $('#punjabMale').text(counts.punjabMale);
+                    $('#punjabFemale').text(counts.punjabFemale);
                     $('#sindh').text(counts.sindhVisitor);
+                    $('#sindhMale').text(counts.sindhMale);
+                    $('#sindhFemale').text(counts.sindhFemale);
                 },
                 error: function(xhr, status, error) {
                     console.error("An error occurred: " + error);
@@ -2648,6 +2684,58 @@
                     });
                 }
             }
+        });
+    </script>
+    <script>
+        let selectedRows = [];
+
+        // When a checkbox is checked/unchecked, update selectedRows array
+        $(document).on('change', '.select-row', function() {
+            const id = $(this).val();
+
+            if ($(this).is(':checked')) {
+                selectedRows.push(id); // Add the selected row ID to the array
+            } else {
+                selectedRows = selectedRows.filter(item => item !==
+                    id); // Remove the unselected row ID from the array
+            }
+        });
+
+        // Handle bulk delete
+        $('#deleteSelected').click(function() {
+            if (selectedRows.length === 0) {
+                alert('No rows selected');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete the selected records?')) {
+                $.ajax({
+                    url: "{{ route('guest-and-visitors.bulkDelete') }}",
+                    method: 'POST',
+                    data: {
+                        ids: selectedRows,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        // Reload the table and clear the selection array
+                        table.ajax.reload();
+                        selectedRows = [];
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+        });
+
+        // Handle export to Excel or PDF
+        $('#exportSelected').click(function() {
+            if (selectedRows.length === 0) {
+                alert('No rows selected');
+                return;
+            }
+
+            window.location.href = "{{ route('guest-and-visitors.export') }}?ids=" + selectedRows.join(',');
         });
     </script>
 @endsection

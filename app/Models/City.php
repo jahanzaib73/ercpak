@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class City extends Model
 {
     use HasFactory,LogsActivity;
-
+    protected $fillable = ['name','province_id'];
     protected $guarded = [];
 
     public function province()

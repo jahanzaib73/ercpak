@@ -10,9 +10,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Desigination extends Model
 {
-    use HasFactory,LogsActivity;
+    use HasFactory, LogsActivity;
 
     protected $guarded = [];
+    protected $fillable = ['name'];
 
     /**
      * The "booting" method of the model.
@@ -30,7 +31,7 @@ class Desigination extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // protected static function booted()
@@ -46,6 +47,6 @@ class Desigination extends Model
     // Customize log description
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "Desigination has been {$eventName} by ".optional(Auth::user())->full_name;
+        return "Desigination has been {$eventName} by " . optional(Auth::user())->full_name;
     }
 }

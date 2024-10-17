@@ -232,7 +232,7 @@ class TripController extends Controller
         $data['purchaseOrder'] = PurchaseOrder::whereStatus(PurchaseOrder::COMPARATIVEAPPROVED)->get();
         $data['workorders'] = WorkOrder::all();
         $data['fuelSlip'] = Fuel::all();
-        return view('admin.fleets.trips.show', $data);
+        return view('new-admin.fleets.trips.show', $data);
     }
 
     public function tracker($id)

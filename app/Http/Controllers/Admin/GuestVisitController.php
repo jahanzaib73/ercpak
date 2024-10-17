@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\GuestVisitorsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GuestVisitorStoreRequest;
 use App\Http\Requests\GuestVisitorUpdateRequest;
@@ -77,6 +78,9 @@ class GuestVisitController extends Controller
                 ->get();
             return DataTables::of($guestVisitors)
                 ->addIndexColumn()
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="select-row" value="' . $row->id . '">';
+                })
                 ->addColumn('action', function ($row) use ($request) {
                     $btn = '';
                     if (Auth::user()->can('View Guest and Visitors')) {
@@ -211,7 +215,7 @@ class GuestVisitController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['expandable_cnic', 'details', 'action', 'photo'])
+                ->rawColumns(['checkbox', 'expandable_cnic', 'details', 'action', 'photo'])
                 ->make(true);
         }
 
@@ -416,21 +420,47 @@ class GuestVisitController extends Controller
                 $query->where('guest_vistors.category', $request->category);
             })
             ->orderBy('guest_vistors.created_at', 'desc');
+        $data['allMale'] = (clone $guestVisitors)->where('gender', 'Male')->count();
+        $data['allFemale'] = (clone $guestVisitors)->where('gender', 'Female')->count();
         $data['baluchistanVisitor'] = (clone $guestVisitors)->whereHas('city', function ($query) {
             $query->where('province_id', 1); // Baluchistan
         })->count();
+        $data['baluchistanMale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 1); // Baluchistan
+        })->where('gender', 'Male')->count();
+        $data['baluchistanFemale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 1); // Baluchistan
+        })->where('gender', 'Female')->count();
 
         $data['punjabVisitor'] = (clone $guestVisitors)->whereHas('city', function ($query) {
             $query->where('province_id', 2); // Punjab
         })->count();
+        $data['punjabMale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 2);
+        })->where('gender', 'Male')->count();
+        $data['punjabFemale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 2);
+        })->where('gender', 'Female')->count();
 
         $data['sindhVisitor'] = (clone $guestVisitors)->whereHas('city', function ($query) {
             $query->where('province_id', 3); // Sindh
         })->count();
+        $data['sindhMale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 3);
+        })->where('gender', 'Male')->count();
+        $data['sindhFemale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 3);
+        })->where('gender', 'Female')->count();
 
         $data['khyberVisitor'] = (clone $guestVisitors)->whereHas('city', function ($query) {
             $query->where('province_id', 4); // Khyber PK
         })->count();
+        $data['khyberMale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 4);
+        })->where('gender', 'Male')->count();
+        $data['khyberFemale'] = (clone $guestVisitors)->whereHas('city', function ($query) {
+            $query->where('province_id', 4);
+        })->where('gender', 'Female')->count();
 
         $data['capitalVisitor'] = (clone $guestVisitors)->whereHas('city', function ($query) {
             $query->where('province_id', 5); // Capital
@@ -439,10 +469,20 @@ class GuestVisitController extends Controller
 
         $counts = [
             'totalGuests' => $guestVisitors->count(),
+            'allMale' => $data['allMale'],
+            'allFemale' => $data['allFemale'],
             'baluchistanVisitor' => $data['baluchistanVisitor'],
+            'baluchistanMale' => $data['baluchistanMale'],
+            'baluchistanFemale' => $data['baluchistanFemale'],
             'khyberVisitor' => $data['khyberVisitor'],
+            'khyberMale' => $data['khyberMale'],
+            'khyberFemale' => $data['khyberFemale'],
             'punjabVisitor' => $data['punjabVisitor'],
+            'punjabMale' => $data['punjabMale'],
+            'punjabFemale' => $data['punjabFemale'],
             'sindhVisitor' => $data['sindhVisitor'],
+            'sindhMale' => $data['sindhMale'],
+            'sindhFemale' => $data['sindhFemale'],
             // Add other necessary counts here
         ];
         return ['counts' => $counts];
@@ -1005,5 +1045,24 @@ class GuestVisitController extends Controller
         }
 
         return back()->with('success', 'Record updated successfully!');
+    }
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        // Perform the bulk deletion
+        GuestVistor::whereIn('id', $ids)->delete();
+
+        return response()->json(['success' => 'Records deleted successfully.']);
+    }
+    public function export(Request $request)
+    {
+        $ids = $request->input('ids');
+        $ids = explode(',', $ids);
+
+        $guestVisitors = GuestVistor::whereIn('id', $ids)->get();
+
+        // Use a package like Maatwebsite Excel or DOMPDF to handle export
+        return Excel::download(new GuestVisitorsExport($guestVisitors), 'guest_visitors.xlsx');
     }
 }

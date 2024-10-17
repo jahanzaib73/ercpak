@@ -11,6 +11,7 @@ class PurposeOfVisit extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $fillable = ['name'];
 
     public function user()
     {
@@ -19,7 +20,7 @@ class PurposeOfVisit extends Model
 
     public function guestVisitors()
     {
-        return $this->hasMany(GuestVistor::class, 'purpose_of_visit_id','id');
+        return $this->hasMany(GuestVistor::class, 'purpose_of_visit_id', 'id');
     }
 
     /**
